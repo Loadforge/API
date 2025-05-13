@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  rust:
+    build: .
+    container_name: Loadforge_API
+    ports:
+      - "8080:8080"
