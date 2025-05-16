@@ -6,3 +6,13 @@ services:
     container_name: Loadforge_API
     ports:
       - "8080:8080"
+  postgres:
+    image: postgres:latest
+    container_name: LoadForge_BD
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: LoadForge
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
+  
