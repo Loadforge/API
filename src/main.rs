@@ -4,6 +4,16 @@ use serde::Serialize;
 use sqlx::PgPool;
 
 mod config;
+mod api; 
+pub mod handlers;
+pub mod services;
+pub mod models;
+pub mod repositories;
+
+
+
+use config::db;
+use api::project; 
 
 #[derive(Serialize)]
 struct HealthResponse {
@@ -28,7 +38,7 @@ async fn health(db: web::Data<PgPool>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let db_pool = config::db::connect_db().await;
+    let db_pool = db::connect_db().await;
 
     HttpServer::new(move || {
         App::new()
@@ -40,6 +50,7 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_header(),
             )
             .route("/health", web::get().to(health))
+            .configure(project::config) 
     })
     .bind(("0.0.0.0", 8080))?
     .run()
