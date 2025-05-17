@@ -1,6 +1,7 @@
 use actix_web::{web, App, HttpServer, Responder, HttpResponse};
 use actix_cors::Cors;
 use serde::Serialize;
+mod db;
 
 #[derive(Serialize)]
 struct HealthResponse {
@@ -15,6 +16,7 @@ async fn health() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
     HttpServer::new(|| {
         App::new()
             .wrap(
@@ -24,7 +26,8 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_header()
             )
             .route("/health", web::get().to(health))
-    })
+    }
+)
     .bind(("0.0.0.0", 8080))?  
     .run()
     .await

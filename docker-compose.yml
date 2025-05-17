@@ -1,11 +1,6 @@
 version: '3.8'
 
 services:
-  rust:
-    build: .
-    container_name: Loadforge_API
-    ports:
-      - "8080:8080"
   postgres:
     image: postgres:latest
     container_name: LoadForge_BD
@@ -15,4 +10,15 @@ services:
       POSTGRES_DB: LoadForge
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456789
-  
+
+  rust:
+    build: .
+    container_name: Loadforge_API
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:123456789@postgres:5432/LoadForge
+    mem_limit: 512m
+    cpus: 0.5
