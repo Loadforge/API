@@ -1,5 +1,5 @@
 use actix_web::{web, HttpResponse, Responder};
-use crate::services::project::ProjectService;
+use crate::services::project_service::ProjectService;
 use sqlx::PgPool;
 
 pub async fn get_projects_handler(db_pool: web::Data<PgPool>) -> impl Responder {

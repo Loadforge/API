@@ -1,5 +1,5 @@
-use crate::models::project::Project;
-use crate::repositories::project::ProjectRepository;
+use crate::models::project_model::Project;
+use crate::repositories::project_repository::ProjectRepository;
 use sqlx::PgPool;
 
 pub struct ProjectService;

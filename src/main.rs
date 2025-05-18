@@ -1,40 +1,14 @@
-use actix_web::{web, App, HttpServer, Responder, HttpResponse};
-use actix_cors::Cors;
-use serde::Serialize;
-use sqlx::PgPool;
-
 mod config;
-mod api; 
-pub mod handlers;
-pub mod services;
-pub mod models;
-pub mod repositories;
-
-
-
+mod routes; 
+mod handlers;
+mod services;
+mod models;
+mod repositories;
+use actix_web::{web, App, HttpServer};
+use actix_cors::Cors;
 use config::db;
-use api::project; 
+use routes::{health_route, project_route}; 
 
-#[derive(Serialize)]
-struct HealthResponse {
-    API_status: String,
-    DB_status: String,
-}
-
-async fn health(db: web::Data<PgPool>) -> impl Responder {
-    let result = sqlx::query("SELECT 1").execute(db.get_ref()).await;
-
-    match result {
-        Ok(_) => HttpResponse::Ok().json(HealthResponse {
-            API_status: "ok".to_string(),
-            DB_status: "ok".to_string(),
-        }),
-        Err(_) => HttpResponse::InternalServerError().json(HealthResponse {
-            API_status: "ok".to_string(),
-            DB_status: "database error".to_string(),
-        }),
-    }
-}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -49,8 +23,9 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_method()
                     .allow_any_header(),
             )
-            .route("/health", web::get().to(health))
-            .configure(project::config) 
+            .configure(health_route::config) 
+            
+            .configure(project_route::config) 
     })
     .bind(("0.0.0.0", 8080))?
     .run()

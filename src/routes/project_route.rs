@@ -1,5 +1,5 @@
 use actix_web::web;
-use crate::handlers::project::{
+use crate::handlers::project_handler::{
     get_projects_handler,
 };
 
