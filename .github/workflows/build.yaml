@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-cargo-build-
 
       - name: Install cargo-sqlx CLI
-        run: cargo install cargo-sqlx --no-default-features --features postgres
+        run: cargo install sqlx-cli --no-default-features --features postgres
 
       - name: Prepare SQLx (validate queries)
         run: cargo sqlx prepare -- --lib
