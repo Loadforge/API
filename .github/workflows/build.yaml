@@ -58,7 +58,7 @@ jobs:
         run: cargo install sqlx-cli --no-default-features --features postgres
 
       - name: Prepare SQLx (validate queries)
-        run: cargo sqlx prepare -- --lib
+        run: cargo sqlx prepare 
 
       - name: Build project
         run: cargo build --release
