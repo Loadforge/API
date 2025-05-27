@@ -9,8 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: postgres://user:password@localhost:5432/testdb
 
     steps:
       - name: Checkout repository
@@ -38,7 +54,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-build-
 
-      - name: Install cargo-sqlx CLI
+      - name: Install sqlx-cli
         run: cargo install sqlx-cli --no-default-features --features postgres
 
       - name: Prepare SQLx (validate queries)
