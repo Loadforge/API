@@ -38,6 +38,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-build-
 
+      - name: Install cargo-sqlx CLI
+        run: cargo install cargo-sqlx --no-default-features --features postgres
+
       - name: Prepare SQLx (validate queries)
         run: cargo sqlx prepare -- --lib
 
