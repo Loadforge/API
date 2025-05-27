@@ -8,7 +8,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/project")
             .route("", web::get().to(get_projects_handler)) 
-            .route("", web::get().to(create_project_handler))  
+            .route("", web::post().to(create_project_handler))  
 
            
     );

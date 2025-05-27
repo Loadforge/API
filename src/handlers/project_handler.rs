@@ -1,6 +1,6 @@
 use actix_web::{web, HttpResponse, Responder};
 use crate::services::project_service::ProjectService;
-use crate::models::project_model::Project;
+use crate::models::project_model::CreateProjectDTO;
 use sqlx::PgPool;
 
 pub async fn get_projects_handler(db_pool: web::Data<PgPool>) -> impl Responder {
@@ -11,7 +11,7 @@ pub async fn get_projects_handler(db_pool: web::Data<PgPool>) -> impl Responder 
 }
 pub async fn create_project_handler(
     db_pool: web::Data<PgPool>,
-    project: web::Json<Project>,
+    project: web::Json<CreateProjectDTO>,
 ) -> impl Responder {
     match ProjectService::create_project(db_pool.get_ref(), &project.into_inner()).await {
         Ok(inserted_project) => HttpResponse::Created().json(inserted_project),
